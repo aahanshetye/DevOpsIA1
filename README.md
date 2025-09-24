@@ -93,14 +93,14 @@ trivy fs --format table --output reports/trivy-fs.txt .
 
 ---
 
-### Sample Findings
+### Findings
 - Flask `1.0.2` → Vulnerable, upgrade to `2.2.5` or `2.3.2`.  
 - setuptools `65.5.1` → Vulnerable, upgrade to `70.0.0+`.  
 - No HIGH/CRITICAL OS-level vulnerabilities in `python:3.10-slim`.  
 
 ---
 
-### Next Steps / Improvements
+### Possible Improvements
 - Upgrade dependencies and re-run scans to demonstrate remediation.  
 - Add secret scanning (`trivy fs --scanners secret`).  
 - Extend to IaC scanning (Terraform, Kubernetes manifests).  
