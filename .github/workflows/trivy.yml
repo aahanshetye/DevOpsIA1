@@ -1,0 +1,39 @@
+name: trivy-scan
+on:
+  push:
+  pull_request:
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build image
+        run: docker build -t trivy-macos-demo:local ./app
+
+      - name: Trivy (image) SARIF, fail on HIGH/CRITICAL
+        uses: aquasecurity/trivy-action@0.20.0
+        with:
+          scan-type: image
+          image-ref: trivy-macos-demo:local
+          format: sarif
+          output: reports/trivy-image.sarif
+          severity: HIGH,CRITICAL
+          exit-code: 1
+
+      - name: Trivy (filesystem) table
+        uses: aquasecurity/trivy-action@0.20.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          format: table
+          output: reports/trivy-fs.txt
+          severity: HIGH,CRITICAL
+          exit-code: 0
+
+      - name: Upload reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: trivy-reports
+          path: reports/
